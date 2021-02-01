@@ -11,7 +11,7 @@
 
             <div class="form-group">
                 <label for="avatar">Avatar:</label>
-                <input type="file" name="avatar">
+                <input type="file" name="avatar" required>
             </div>
             <div class="form-group">
                 <label for="firstname">Firstname:</label>
