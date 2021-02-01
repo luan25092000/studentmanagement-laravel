@@ -12,9 +12,6 @@
 <body>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <a class="navbar-brand"href="{{ route('index') }}"><i class="fas fa-user-graduate"></i> Student Management</a>
-          <button class="navbar-toggler"type="button"data-toggle="collapse"data-target="#navbarSupportedContent">
-              <span class="navbar-toggler-icon"></span>
-          </button>
           <div class="collapse navbar-collapse"id="navbarSupportedContent">
               <ul class="navbar-nav">
                   <li class="nav-item">
@@ -22,6 +19,11 @@
                   </li>
                   <li class="nav-item">
                       <a class="nav-link" href="{{ route('add.student.form') }}">Add student</a>
+                  </li>
+              </ul>
+              <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                      <a class="nav-link" href="./"><i class="fas fa-sign-out-alt"></i></a>
                   </li>
               </ul>
           </div>

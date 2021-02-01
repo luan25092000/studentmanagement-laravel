@@ -154,4 +154,17 @@ class StudentController extends Controller
         $student->delete();
         return redirect()->route('index')->with('success','Delete student successfully !');
     }
+
+    /**
+     * Login student management system
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function login(Request $request){
+        if($request->input('username')=='admin' && $request->input('password')=='admin'){
+            return redirect()->route('index')->with('success','Login successfully !');
+        }
+    }
+
 }
