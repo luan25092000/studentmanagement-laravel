@@ -9,9 +9,11 @@
         <p class="major">{{ $student['major'] }}</p>
         <p>Age: {{ $student['age'] }}</p>
         <div style="margin: 24px 0;">
-            <a href="{{ route('index') }}" type="button" class="btn btn-secondary">Back</a> 
+            <a href="{{ route('index') }}" type="button" class="btn btn-secondary">Back</a>
+            @role('admin') 
             <a href="{{ route('edit.student.form',['id' => $student['id']]) }}" type="button" class="btn btn-warning">Edit</a>  
-            <a href="{{ route('delete.student',['id' => $student['id']]) }}" type="button" class="btn btn-danger">Delete</a>  
+            <a href="{{ route('delete.student',['id' => $student['id']]) }}" type="button" class="btn btn-danger">Delete</a>
+            @endrole 
         </div>
     </div>
 @endsection

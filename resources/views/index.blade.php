@@ -25,7 +25,9 @@
                             <td>{{ $student['sex'] }}</td>
                             <td>{{ $student['age'] }}</td>
                             <td>{{ $student['major'] }}</td>
-                            <td><a href="{{ route('show.student',['id' => $student['id']]) }}" type="button" class="btn btn-success">View</a></td>
+                            <td>
+                                <a href="{{ route('show.student',['id' => $student['id']]) }}" type="button" class="btn btn-success">View</a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

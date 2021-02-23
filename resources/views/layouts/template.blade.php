@@ -10,42 +10,51 @@
   <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
 </head>
 <body>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand"href="{{ route('index') }}"><i class="fas fa-user-graduate"></i> Student Management</a>
-          <div class="collapse navbar-collapse"id="navbarSupportedContent">
-              <ul class="navbar-nav">
-                  <li class="nav-item">
-                      <a class="nav-link" href="{{ route('index') }}">Home</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="{{ route('add.student.form') }}">Add student</a>
-                  </li>
-              </ul>
-              <ul class="navbar-nav ml-auto">
-                  <li class="nav-item">
-                      <a class="nav-link" href="./"><i class="fas fa-sign-out-alt"></i></a>
-                  </li>
-              </ul>
-          </div>
-      </nav>
-      <div class="container">
-            @if(session()->has('success'))
+    @if (Auth::check())
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand"href="{{ route('index') }}"><i class="fas fa-user-graduate"></i> Student Management</a>
+                <div class="collapse navbar-collapse"id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('index') }}">Home</a>
+                        </li>
+                        @role('admin|writer')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('add.student.form') }}">Add student</a>
+                        </li>
+                        @endrole
+                    </ul>
+                    <ul class="navbar-nav ml-auto mr-4">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-user mr-1"></i>{{ Session::get('user')->firstname }} {{ Session::get('user')->lastname }}</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="container">
+                @if(session()->has('success'))
                     <div class="alert alert-success mt-3 alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         {{session()->get('success')}}
                     </div>
-            @endif
-            @yield('content')
-      </div>
-      <!-- Load Facebook SDK for JavaScript -->
-	<div id="fb-root"></div>
-	  <!-- Your Chat Plugin code -->
-	<div class="fb-customerchat"
-	  attribution=setup_tool
-	  page_id="103558981631961"
-    logged_in_greeting="Mình là Luân, mình có thể giúp gì được cho bạn!"
-    logged_out_greeting="Mình là Luân, mình có thể giúp gì được cho bạn!">
-    </div>
+                @endif
+                @yield('content')
+            </div>
+            <!-- Load Facebook SDK for JavaScript -->
+        <div id="fb-root"></div>
+            <!-- Your Chat Plugin code -->
+        <div class="fb-customerchat"
+            attribution=setup_tool
+            page_id="103558981631961"
+        logged_in_greeting="Mình là Luân, mình có thể giúp gì được cho bạn!"
+        logged_out_greeting="Mình là Luân, mình có thể giúp gì được cho bạn!">
+        </div>
+    @else
+        <script>window.location.href = "{{ route('login.form') }}";</script>
+    @endif
     <script>
         window.fbAsyncInit = function() {
             FB.init({

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Student;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use App\User;
 
 class StudentController extends Controller
 {
@@ -162,9 +165,63 @@ class StudentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function login(Request $request){
-        if($request->input('username')=='admin' && $request->input('password')=='admin'){
-            return redirect()->route('index')->with('success','Login successfully !');
+        // Form validation
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required|min:8'
+        ]);
+
+        if(Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])){
+            if(Session::has('user')){
+                Session::forget('user');
+                Session::put('user',Auth::user());
+            }else{
+                Session::put('user',Auth::user());
+            }
+            return redirect()->route('index')->with("success","Login successfully!");
+        }else{
+            return back()->with("invalid","Username or password is invalid!");
         }
     }
 
+    /**
+     * Register account
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request){
+        // Form validation
+        $this->validate($request, [
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8'
+        ]);
+        if($request->input('password') !== $request->input('confirm-password')){
+            return redirect()->route('register.form')->with("invalid","Password and password confirm are not matched!");
+        }
+         //  Store data in database
+         $user = new User([
+            'firstname' => $request->input('firstname'),
+            'lastname' => $request->input('lastname'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')) 
+        ]);
+        $user->save();
+        if(Session::has('user')){
+            Session::forget('user');
+            Session::put('user',$user);
+        }else{
+            Session::put('user',$user);
+        }
+        Auth::login($user);
+        return redirect()->route('index')->with("success","Register successfully!");
+
+    }
+
+    public function logOut(){
+        Auth::logout();
+        return back();
+    }
 }
